@@ -25,15 +25,6 @@ define [
     cells
 
   HeightmapChunk = Backbone.Model.extend
-    defaults:
-      cells: undefined
-      ne: 0
-      nw: 0
-      se: 0
-      sw: 0
-      width: 0
-      height: 0
-
     initialize: ->
       @set "cells", bilinearInterpolation(
         @get("ne"),

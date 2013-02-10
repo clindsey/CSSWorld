@@ -6,6 +6,9 @@
     return ViewportTile = Backbone.View.extend({
       tagName: "div",
       className: "map-tile",
+      initialize: function() {
+        return this.listenTo(this.model, "remove", this.remove);
+      },
       render: function() {
         var colorBit;
         this.$el.html(this.model.get("data"));

@@ -5,13 +5,7 @@
     var Heightmap;
     Heightmap = Backbone.Model.extend({
       defaults: {
-        data: void 0,
-        SEED: 20130210,
-        worldChunkWidth: 0,
-        worldChunkHeight: 0,
-        chunkWidth: 0,
-        chunkHeight: 0,
-        maxElevation: 0
+        SEED: 20130210
       },
       initialize: function() {
         var chunkHeight, chunkWidth, chunks, maxElevation, worldChunkHeight, worldChunkWidth;
@@ -20,6 +14,10 @@
         chunkWidth = 9;
         chunkHeight = 9;
         maxElevation = 10;
+        this.set({
+          worldTileWidth: worldChunkWidth * chunkWidth,
+          worldTileHeight: worldChunkHeight * chunkHeight
+        });
         chunks = this.buildChunks(worldChunkWidth, worldChunkHeight, chunkWidth, chunkHeight, maxElevation);
         return this.set("data", this.generateHeightmap(chunks, worldChunkWidth * chunkWidth, worldChunkHeight * chunkHeight, chunkWidth, chunkHeight));
       },

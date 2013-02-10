@@ -9,13 +9,7 @@ define [
 
   Heightmap = Backbone.Model.extend
     defaults:
-      data: undefined
       SEED: 20130210
-      worldChunkWidth: 0
-      worldChunkHeight: 0
-      chunkWidth: 0
-      chunkHeight: 0
-      maxElevation: 0
 
     initialize: ->
       worldChunkWidth = 8
@@ -23,6 +17,10 @@ define [
       chunkWidth = 9
       chunkHeight = 9
       maxElevation = 10
+
+      @set
+        worldTileWidth: worldChunkWidth * chunkWidth
+        worldTileHeight: worldChunkHeight * chunkHeight
 
       chunks = @buildChunks worldChunkWidth, worldChunkHeight, chunkWidth, chunkHeight, maxElevation
       @set "data", @generateHeightmap chunks, worldChunkWidth * chunkWidth, worldChunkHeight * chunkHeight, chunkWidth, chunkHeight

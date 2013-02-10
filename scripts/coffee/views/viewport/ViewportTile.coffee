@@ -8,6 +8,9 @@ define [
 
     className: "map-tile"
 
+    initialize: ->
+      @listenTo @model, "remove", @remove
+
     render: ->
       @$el.html @model.get "data"
 

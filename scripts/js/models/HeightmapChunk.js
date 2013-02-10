@@ -25,15 +25,6 @@
       return cells;
     };
     return HeightmapChunk = Backbone.Model.extend({
-      defaults: {
-        cells: void 0,
-        ne: 0,
-        nw: 0,
-        se: 0,
-        sw: 0,
-        width: 0,
-        height: 0
-      },
       initialize: function() {
         return this.set("cells", bilinearInterpolation(this.get("ne"), this.get("nw"), this.get("se"), this.get("sw"), this.get("width"), this.get("height")));
       }

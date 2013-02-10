@@ -3,13 +3,7 @@
 
   define(["Backbone"], function() {
     var ViewportTile;
-    return ViewportTile = Backbone.Model.extend({
-      defaults: {
-        data: 0,
-        x: 0,
-        y: 0
-      }
-    });
+    return ViewportTile = Backbone.Model.extend();
   });
 
 }).call(this);
