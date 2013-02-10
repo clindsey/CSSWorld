@@ -1,0 +1,23 @@
+@import url("../vendor/bootstrap/2.3.0/css/bootstrap.css");
+@import url("../vendor/elusive-webfont/css/elusive-webfont.css");
+
+body {
+  padding-top: 20px;
+  padding-bottom: 40px;
+  background-color: #ddd;
+}
+
+.map-viewport {
+  width: 200px;
+  height: 200px;
+}
+
+.map-tile {
+  float: left;
+  width: 20px;
+  height: 20px;
+  background-color: #880000;
+  color: #fff;
+  text-align: center;
+  text-shadow: 1px 1px 0 #000;
+}
