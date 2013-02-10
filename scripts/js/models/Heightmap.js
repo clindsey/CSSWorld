@@ -6,7 +6,7 @@
     Heightmap = Backbone.Model.extend({
       defaults: {
         data: void 0,
-        SEED: 20130209,
+        SEED: 20130210,
         worldChunkWidth: 0,
         worldChunkHeight: 0,
         chunkWidth: 0,
@@ -62,25 +62,25 @@
         for (y = _i = 0, _ref = worldChunkHeight - 1; 0 <= _ref ? _i <= _ref : _i >= _ref; y = 0 <= _ref ? ++_i : --_i) {
           chunks[y] = [];
           for (x = _j = 0, _ref1 = worldChunkWidth - 1; 0 <= _ref1 ? _j <= _ref1 : _j >= _ref1; x = 0 <= _ref1 ? ++_j : --_j) {
-            nw = ~~((new Alea((y * worldTileWidth + x) * SEED))() * maxElevation);
+            nw = (new Alea(y * worldTileWidth + x + SEED))() * maxElevation;
             if (x + 1 === worldChunkWidth) {
-              ne = ~~((new Alea(y * worldTileWidth + SEED))() * maxElevation);
+              ne = (new Alea(y * worldTileWidth + SEED))() * maxElevation;
             } else {
-              ne = ~~((new Alea(y * worldTileWidth + x + 1 + SEED))() * maxElevation);
+              ne = (new Alea(y * worldTileWidth + x + 1 + SEED))() * maxElevation;
             }
             if (y + 1 === worldChunkHeight) {
-              sw = ~~((new Alea(x + SEED))() * maxElevation);
+              sw = (new Alea(x + SEED))() * maxElevation;
               if (x + 1 === worldChunkWidth) {
-                se = ~~((new Alea(worldTileWidth + SEED)()) * maxElevation);
+                se = (new Alea(SEED)()) * maxElevation;
               } else {
-                se = ~~((new Alea(worldTileWidth + x + 1 + SEED))() * maxElevation);
+                se = (new Alea(x + 1 + SEED))() * maxElevation;
               }
             } else {
-              sw = ~~((new Alea((y + 1) * worldTileWidth + x + SEED))() * maxElevation);
+              sw = (new Alea((y + 1) * worldTileWidth + x + SEED))() * maxElevation;
               if (x + 1 === worldChunkWidth) {
-                se = ~~((new Alea((y + 1) * worldTileWidth + SEED))() * maxElevation);
+                se = (new Alea((y + 1) * worldTileWidth + SEED))() * maxElevation;
               } else {
-                se = ~~((new Alea((y + 1) * worldTileWidth + x + 1 + SEED))() * maxElevation);
+                se = (new Alea((y + 1) * worldTileWidth + x + 1 + SEED))() * maxElevation;
               }
             }
             chunks[y][x] = new HeightmapChunkModel({

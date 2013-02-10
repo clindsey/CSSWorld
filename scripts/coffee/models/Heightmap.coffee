@@ -10,7 +10,7 @@ define [
   Heightmap = Backbone.Model.extend
     defaults:
       data: undefined
-      SEED: 20130209
+      SEED: 20130210
       worldChunkWidth: 0
       worldChunkHeight: 0
       chunkWidth: 0
@@ -61,27 +61,27 @@ define [
         chunks[y] = []
 
         for x in [0..worldChunkWidth - 1]
-          nw = ~~((new Alea((y * worldTileWidth + x) * SEED))() * maxElevation)
+          nw = (new Alea(y * worldTileWidth + x + SEED))() * maxElevation
 
           if x + 1 is worldChunkWidth
-            ne = ~~((new Alea(y * worldTileWidth + SEED))() * maxElevation)
+            ne = (new Alea(y * worldTileWidth + SEED))() * maxElevation
           else
-            ne = ~~((new Alea(y * worldTileWidth + x + 1 + SEED))() * maxElevation)
+            ne = (new Alea(y * worldTileWidth + x + 1 + SEED))() * maxElevation
 
           if y + 1 is worldChunkHeight
-            sw = ~~((new Alea(x + SEED))() * maxElevation)
+            sw = (new Alea(x + SEED))() * maxElevation
 
             if x + 1 is worldChunkWidth
-              se = ~~((new Alea(worldTileWidth + SEED)()) * maxElevation)
+              se = (new Alea(SEED)()) * maxElevation
             else
-              se = ~~((new Alea(worldTileWidth + x + 1 + SEED))() * maxElevation)
+              se = (new Alea(x + 1 + SEED))() * maxElevation
           else
-            sw = ~~((new Alea((y + 1) * worldTileWidth + x + SEED))() * maxElevation)
+            sw = (new Alea((y + 1) * worldTileWidth + x + SEED))() * maxElevation
 
             if x + 1 is worldChunkWidth
-              se = ~~((new Alea((y + 1) * worldTileWidth + SEED))() * maxElevation)
+              se = (new Alea((y + 1) * worldTileWidth + SEED))() * maxElevation
             else
-              se = ~~((new Alea((y + 1) * worldTileWidth + x + 1 + SEED))() * maxElevation)
+              se = (new Alea((y + 1) * worldTileWidth + x + 1 + SEED))() * maxElevation
 
           chunks[y][x] = new HeightmapChunkModel
             ne: ne
