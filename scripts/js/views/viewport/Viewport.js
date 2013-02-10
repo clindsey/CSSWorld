@@ -8,36 +8,50 @@
       initialize: function() {
         var _this = this;
         this.render();
-        this.listenTo(viewportModel, "moved", this.render);
+        this.listenTo(viewportModel, "moved", this.updateViewport);
         return $(document).keydown(function(jqEvent) {
-          var viewportX, viewportY;
+          var viewportX, viewportY, vx, vy;
           viewportX = viewportModel.get("x");
           viewportY = viewportModel.get("y");
+          vx = 0;
+          vy = 0;
           if (jqEvent.keyCode === 37) {
-            viewportX -= 1;
+            vx -= 1;
           } else if (jqEvent.keyCode === 38) {
-            viewportY -= 1;
+            vy -= 1;
           } else if (jqEvent.keyCode === 39) {
-            viewportX += 1;
+            vx += 1;
           } else if (jqEvent.keyCode === 40) {
-            viewportY += 1;
+            vy += 1;
           }
-          return viewportModel.set({
-            x: viewportX,
-            y: viewportY
+          viewportModel.set({
+            x: viewportX + vx,
+            y: viewportY + vy
           });
+          if (!(vx === 0 && vy === 0)) {
+            jqEvent.preventDefault();
+            jqEvent.stopPropagation();
+            return false;
+          }
         });
       },
       render: function() {
         var _this = this;
+        this.grid = [];
         viewportTiles.each(function(viewportTileModel) {
           var viewportTileView;
-          viewportTileView = new ViewportTileView({
-            model: viewportTileModel
-          });
-          return _this.$el.append(viewportTileView.render().$el);
+          viewportTileView = new ViewportTileView;
+          viewportTileView.type = viewportTileModel.get("type");
+          _this.$el.append(viewportTileView.render().$el);
+          return _this.grid.push(viewportTileView);
         });
         return this;
+      },
+      updateViewport: function() {
+        return _.each(this.grid, function(viewportTileView, index) {
+          viewportTileView.type = viewportTiles.at(index).get("type");
+          return viewportTileView.setBackgroundPosition();
+        });
       }
     });
   });

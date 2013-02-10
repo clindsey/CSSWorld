@@ -14,29 +14,47 @@ define [
     initialize: ->
       @render()
 
-      @listenTo viewportModel, "moved", @render
+      @listenTo viewportModel, "moved", @updateViewport
 
       $(document).keydown (jqEvent) =>
         viewportX = viewportModel.get "x"
         viewportY = viewportModel.get "y"
 
+        vx = 0
+        vy = 0
+
         if jqEvent.keyCode is 37 # left
-          viewportX -= 1
+          vx -= 1
         else if jqEvent.keyCode is 38 # up
-          viewportY -= 1
+          vy -= 1
         else if jqEvent.keyCode is 39 # right
-          viewportX += 1
+          vx += 1
         else if jqEvent.keyCode is 40 # down
-          viewportY += 1
+          vy += 1
 
         viewportModel.set
-          x: viewportX
-          y: viewportY
+          x: viewportX + vx
+          y: viewportY + vy
+
+        unless vx is 0 and vy is 0
+          jqEvent.preventDefault()
+          jqEvent.stopPropagation()
+          return false
 
     render: ->
+      @grid = []
+
       viewportTiles.each (viewportTileModel) =>
-        viewportTileView = new ViewportTileView model: viewportTileModel
+        viewportTileView = new ViewportTileView
+        viewportTileView.type = viewportTileModel.get "type"
 
         @$el.append viewportTileView.render().$el
 
+        @grid.push viewportTileView
+
       @
+
+    updateViewport: ->
+      _.each @grid, (viewportTileView, index) ->
+        viewportTileView.type = viewportTiles.at(index).get("type")
+        viewportTileView.setBackgroundPosition()

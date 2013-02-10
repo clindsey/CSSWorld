@@ -6,13 +6,15 @@
     return ViewportTile = Backbone.View.extend({
       tagName: "div",
       className: "map-tile",
-      initialize: function() {
-        return this.listenTo(this.model, "remove", this.remove);
-      },
       render: function() {
+        return this.setBackgroundPosition();
+      },
+      setBackgroundPosition: function() {
+        var backgroundPositionX, backgroundPositionY;
+        backgroundPositionX = 0 - ((this.type % 16) * 16);
+        backgroundPositionY = 0 - (~~(this.type / 16) * 16);
         this.$el.css({
-          backgroundPositionX: 0 - ((this.model.get("type") % 16) * 16),
-          backgroundPositionY: 0 - (~~(this.model.get("type") / 16) * 16)
+          backgroundPosition: "" + backgroundPositionX + "px " + backgroundPositionY + "px"
         });
         return this;
       }
