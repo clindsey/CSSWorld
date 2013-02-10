@@ -10,8 +10,8 @@ define [
     defaults:
       x: 0
       y: 0
-      width: 10
-      height: 10
+      width: 20
+      height: 20
 
     initialize: ->
       @listenTo @, "change:x", @updateTiles
@@ -19,9 +19,7 @@ define [
       @listenTo @, "change:width", @updateTiles
       @listenTo @, "change:height", @updateTiles
 
-      for tileRow in heightmap.getArea @get("width"), @get("height"), @get("x"), @get("y")
-        for tile in tileRow
-          viewportTiles.add tile
+      @updateTiles()
 
     clamp: (index, size) ->
       (index + size) % size

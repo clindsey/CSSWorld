@@ -5,10 +5,10 @@
     var Heightmap;
     Heightmap = Backbone.Model.extend({
       defaults: {
-        SEED: 20130210
+        SEED: (new Date()).getTime()
       },
       initialize: function() {
-        var chunkHeight, chunkWidth, chunks, maxElevation, worldChunkHeight, worldChunkWidth;
+        var chunkHeight, chunkWidth, chunks, heightmap, maxElevation, worldChunkHeight, worldChunkWidth;
         worldChunkWidth = 8;
         worldChunkHeight = 8;
         chunkWidth = 9;
@@ -19,12 +19,59 @@
           worldTileHeight: worldChunkHeight * chunkHeight
         });
         chunks = this.buildChunks(worldChunkWidth, worldChunkHeight, chunkWidth, chunkHeight, maxElevation);
-        return this.set("data", this.generateHeightmap(chunks, worldChunkWidth * chunkWidth, worldChunkHeight * chunkHeight, chunkWidth, chunkHeight));
+        heightmap = this.generateHeightmap(chunks, worldChunkWidth * chunkWidth, worldChunkHeight * chunkHeight, chunkWidth, chunkHeight, maxElevation);
+        return this.set("data", this.processTiles(heightmap));
+      },
+      processTiles: function(heightmap) {
+        var a, b, c, cx, cy, d, data, e, f, g, h, n, ne, nw, o, s, se, sw, w, x, xl, y, yl, _i, _j, _ref, _ref1,
+          _this = this;
+        data = [];
+        xl = this.get("worldTileWidth");
+        yl = this.get("worldTileHeight");
+        cx = function(x) {
+          return _this.clamp(x, xl);
+        };
+        cy = function(y) {
+          return _this.clamp(y, yl);
+        };
+        for (y = _i = 0, _ref = yl - 1; 0 <= _ref ? _i <= _ref : _i >= _ref; y = 0 <= _ref ? ++_i : --_i) {
+          data[y] = [];
+          for (x = _j = 0, _ref1 = xl - 1; 0 <= _ref1 ? _j <= _ref1 : _j >= _ref1; x = 0 <= _ref1 ? ++_j : --_j) {
+            n = heightmap[cy(y - 1)][x];
+            e = heightmap[y][cx(x + 1)];
+            s = heightmap[cy(y + 1)][x];
+            w = heightmap[y][cx(x - 1)];
+            ne = heightmap[cy(y - 1)][cx(x + 1)];
+            se = heightmap[cy(y + 1)][cx(x + 1)];
+            sw = heightmap[cy(y + 1)][cx(x - 1)];
+            nw = heightmap[cy(y - 1)][cx(x - 1)];
+            o = heightmap[y][x];
+            if (o === 0) {
+              s = 0;
+            } else {
+              a = n << n * 8 - 4;
+              b = e << e * 8 - 3;
+              c = s << s * 8 - 2;
+              d = w << w * 8 - 1;
+              e = ne << ne * 8 - 8;
+              f = se << se * 8 - 7;
+              g = sw << sw * 8 - 6;
+              h = nw << nw * 8 - 5;
+              s = a + b + c + d + e + f + g + h;
+            }
+            data[y][x] = new ViewportTileModel({
+              type: s,
+              x: x,
+              y: y
+            });
+          }
+        }
+        return data;
       },
       clamp: function(index, size) {
         return (index + size) % size;
       },
-      generateHeightmap: function(chunks, worldTileWidth, worldTileHeight, chunkWidth, chunkHeight) {
+      generateHeightmap: function(chunks, worldTileWidth, worldTileHeight, chunkWidth, chunkHeight, maxElevation) {
         var cell, cellRow, cells, chunk, chunkRow, cx, cy, heightmap, x, xIndex, y, yIndex, _i, _j, _k, _l, _len, _len1, _len2, _len3;
         heightmap = [];
         for (y = _i = 0, _len = chunks.length; _i < _len; y = ++_i) {
@@ -41,16 +88,21 @@
                 if (heightmap[yIndex] == null) {
                   heightmap[yIndex] = [];
                 }
-                heightmap[yIndex][xIndex] = new ViewportTileModel({
-                  data: cell,
-                  x: xIndex,
-                  y: yIndex
-                });
+                heightmap[yIndex][xIndex] = this.tileHeightToType(cell, maxElevation);
               }
             }
           }
         }
         return heightmap;
+      },
+      tileHeightToType: function(height, maxElevation) {
+        var type;
+        if (height / maxElevation >= 0.5) {
+          type = 1;
+        } else {
+          type = 0;
+        }
+        return type;
       },
       buildChunks: function(worldChunkWidth, worldChunkHeight, chunkWidth, chunkHeight, maxElevation) {
         var SEED, chunks, ne, nw, se, sw, worldTileWidth, x, y, _i, _j, _ref, _ref1;

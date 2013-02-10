@@ -10,11 +10,9 @@
         return this.listenTo(this.model, "remove", this.remove);
       },
       render: function() {
-        var colorBit;
-        this.$el.html(this.model.get("data"));
-        colorBit = ~~((this.model.get("data") / 10) * 255);
         this.$el.css({
-          backgroundColor: "rgb(" + colorBit + ", " + colorBit + ", " + colorBit + ")"
+          backgroundPositionX: 0 - ((this.model.get("type") % 16) * 16),
+          backgroundPositionY: 0 - (~~(this.model.get("type") / 16) * 16)
         });
         return this;
       }

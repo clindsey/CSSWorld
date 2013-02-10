@@ -8,16 +8,17 @@ body {
 }
 
 .map-viewport {
-  width: 200px;
-  height: 200px;
+  width: 320px;
+  height: 320px;
 }
 
 .map-tile {
   float: left;
-  width: 20px;
-  height: 20px;
+  width: 16px;
+  height: 16px;
   background-color: #880000;
   color: #fff;
   text-align: center;
   text-shadow: 1px 1px 0 #000;
+  background-image: url(../images/terra.png);
 }

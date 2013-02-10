@@ -9,7 +9,7 @@ define [
 
   Heightmap = Backbone.Model.extend
     defaults:
-      SEED: 20130210
+      SEED: (new Date()).getTime()
 
     initialize: ->
       worldChunkWidth = 8
@@ -23,12 +23,55 @@ define [
         worldTileHeight: worldChunkHeight * chunkHeight
 
       chunks = @buildChunks worldChunkWidth, worldChunkHeight, chunkWidth, chunkHeight, maxElevation
-      @set "data", @generateHeightmap chunks, worldChunkWidth * chunkWidth, worldChunkHeight * chunkHeight, chunkWidth, chunkHeight
+      heightmap = @generateHeightmap chunks, worldChunkWidth * chunkWidth, worldChunkHeight * chunkHeight, chunkWidth, chunkHeight, maxElevation
+      @set "data", @processTiles heightmap
+
+    processTiles: (heightmap) ->
+      data = []
+      xl = @get "worldTileWidth"
+      yl = @get "worldTileHeight"
+      cx = (x) => @clamp x, xl
+      cy = (y) => @clamp y, yl
+
+      for y in [0..yl - 1]
+        data[y] = []
+
+        for x in [0..xl - 1]
+          n = heightmap[cy y - 1][x]
+          e = heightmap[y][cx x + 1]
+          s = heightmap[cy y + 1][x]
+          w = heightmap[y][cx x - 1]
+          ne = heightmap[cy y - 1][cx x + 1]
+          se = heightmap[cy y + 1][cx x + 1]
+          sw = heightmap[cy y + 1][cx x - 1]
+          nw = heightmap[cy y - 1][cx x - 1]
+
+          o = heightmap[y][x]
+
+          if o is 0
+            s = 0
+          else
+            a = n << n * 8 - 4
+            b = e << e * 8 - 3
+            c = s << s * 8 - 2
+            d = w << w * 8 - 1
+            e = ne << ne * 8 - 8
+            f = se << se * 8 - 7
+            g = sw << sw * 8 - 6
+            h = nw << nw * 8 - 5
+            s = a + b + c + d + e + f + g + h
+
+          data[y][x] = new ViewportTileModel(
+              type: s
+              x: x
+              y: y)
+
+      data
 
     clamp: (index, size) ->
       (index + size) % size
 
-    generateHeightmap: (chunks, worldTileWidth, worldTileHeight, chunkWidth, chunkHeight) ->
+    generateHeightmap: (chunks, worldTileWidth, worldTileHeight, chunkWidth, chunkHeight, maxElevation) ->
       heightmap = []
 
       for chunkRow, y in chunks
@@ -41,12 +84,17 @@ define [
               xIndex = cx + (x * cellRow.length)
 
               heightmap[yIndex] = [] unless heightmap[yIndex]?
-              heightmap[yIndex][xIndex] = new ViewportTileModel(
-                  data: cell
-                  x: xIndex
-                  y: yIndex)
+              heightmap[yIndex][xIndex] = @tileHeightToType cell, maxElevation
 
       heightmap
+
+    tileHeightToType: (height, maxElevation) ->
+      if height / maxElevation >= 0.5
+        type = 1
+      else
+        type = 0
+
+      type
 
     buildChunks: (worldChunkWidth, worldChunkHeight, chunkWidth, chunkHeight, maxElevation) ->
       SEED = @get "SEED"

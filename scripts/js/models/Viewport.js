@@ -7,30 +7,15 @@
       defaults: {
         x: 0,
         y: 0,
-        width: 10,
-        height: 10
+        width: 20,
+        height: 20
       },
       initialize: function() {
-        var tile, tileRow, _i, _len, _ref, _results;
         this.listenTo(this, "change:x", this.updateTiles);
         this.listenTo(this, "change:y", this.updateTiles);
         this.listenTo(this, "change:width", this.updateTiles);
         this.listenTo(this, "change:height", this.updateTiles);
-        _ref = heightmap.getArea(this.get("width"), this.get("height"), this.get("x"), this.get("y"));
-        _results = [];
-        for (_i = 0, _len = _ref.length; _i < _len; _i++) {
-          tileRow = _ref[_i];
-          _results.push((function() {
-            var _j, _len1, _results1;
-            _results1 = [];
-            for (_j = 0, _len1 = tileRow.length; _j < _len1; _j++) {
-              tile = tileRow[_j];
-              _results1.push(viewportTiles.add(tile));
-            }
-            return _results1;
-          })());
-        }
-        return _results;
+        return this.updateTiles();
       },
       clamp: function(index, size) {
         return (index + size) % size;

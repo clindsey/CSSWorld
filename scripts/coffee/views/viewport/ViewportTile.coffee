@@ -12,11 +12,8 @@ define [
       @listenTo @model, "remove", @remove
 
     render: ->
-      @$el.html @model.get "data"
-
-      colorBit = ~~((@model.get("data") / 10) * 255)
-
       @$el.css
-        backgroundColor: "rgb(#{colorBit}, #{colorBit}, #{colorBit})"
+        backgroundPositionX: 0 - ((@model.get("type") % 16) * 16)
+        backgroundPositionY: 0 - (~~(@model.get("type") / 16) * 16)
 
-       @
+      @
