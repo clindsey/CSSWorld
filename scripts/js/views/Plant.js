@@ -11,22 +11,48 @@
       },
       render: function() {
         this.setPosition();
+        this.setStage();
         return this;
       },
       onViewportMoved: function() {
         return this.setPosition();
       },
+      setStage: function() {
+        return this.$el.css({
+          backgroundPosition: "-" + (this.model.get("stage") * 16) + "px 0"
+        });
+      },
       setPosition: function() {
-        var centerX, centerY, viewX, viewY, x, y;
+        var centerX, centerY, halfWorldHeight, halfWorldWidth, myX, myY, offsetX, offsetY, viewX, viewY, worldHeight, worldWidth, x, y;
         centerX = ~~(viewportModel.get("width") / 2);
         centerY = ~~(viewportModel.get("height") / 2);
         viewX = viewportModel.get("x");
         viewY = viewportModel.get("y");
-        x = (this.model.get("x") - viewX) + centerX;
-        y = (this.model.get("y") - viewY) + centerY;
+        myX = this.model.get("x");
+        myY = this.model.get("y");
+        x = (myX - viewX) + centerX;
+        y = (myY - viewY) + centerY;
+        worldWidth = heightmapModel.get("worldTileWidth");
+        halfWorldWidth = ~~(worldWidth / 2);
+        worldHeight = heightmapModel.get("worldTileHeight");
+        halfWorldHeight = ~~(worldHeight / 2);
+        offsetX = 0;
+        offsetY = 0;
+        if (myX > viewX + halfWorldWidth) {
+          offsetX -= worldWidth;
+        }
+        if (myX < viewX - halfWorldWidth) {
+          offsetX += worldWidth;
+        }
+        if (myY > viewY + halfWorldHeight) {
+          offsetY -= worldHeight;
+        }
+        if (myY < viewY - halfWorldHeight) {
+          offsetY += worldHeight;
+        }
         return this.$el.css({
-          left: x * 16,
-          top: y * 16
+          left: (x + offsetX) * 16,
+          top: (y + offsetY) * 16
         });
       }
     });

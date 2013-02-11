@@ -10,6 +10,7 @@ body {
 .map-viewport {
   margin: 0 auto;
   position: relative;
+  overflow: hidden;
 }
 
 .map-tile {

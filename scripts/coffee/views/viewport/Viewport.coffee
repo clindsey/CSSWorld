@@ -54,12 +54,13 @@ define [
       while plants.length < plantCount and giveUpCounter > 0
         x = ~~(rnd() * heightmapModel.get("worldTileWidth"))
         y = ~~(rnd() * heightmapModel.get("worldTileHeight"))
+        stage = ~~(rnd() * 4)
 
         unless heightmapData[y][x].get("type") is 255
           giveUpCounter -= 1
           continue
 
-        plant = new PlantModel x: x, y: y
+        plant = new PlantModel x: x, y: y, stage: stage
         plantView = new PlantView model: plant
 
         plants.add plant

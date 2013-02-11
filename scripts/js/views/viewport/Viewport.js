@@ -27,7 +27,7 @@
         return this;
       },
       makePlants: function() {
-        var giveUpCounter, heightmapData, plant, plantCount, plantView, rnd, x, y, _results;
+        var giveUpCounter, heightmapData, plant, plantCount, plantView, rnd, stage, x, y, _results;
         plantCount = 100;
         giveUpCounter = 100;
         rnd = new Alea(heightmapModel.get("SEED"));
@@ -36,13 +36,15 @@
         while (plants.length < plantCount && giveUpCounter > 0) {
           x = ~~(rnd() * heightmapModel.get("worldTileWidth"));
           y = ~~(rnd() * heightmapModel.get("worldTileHeight"));
+          stage = ~~(rnd() * 4);
           if (heightmapData[y][x].get("type") !== 255) {
             giveUpCounter -= 1;
             continue;
           }
           plant = new PlantModel({
             x: x,
-            y: y
+            y: y,
+            stage: stage
           });
           plantView = new PlantView({
             model: plant

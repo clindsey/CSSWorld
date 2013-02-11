@@ -16,20 +16,47 @@ define [
 
     render: ->
       @setPosition()
+      @setStage()
 
       @
 
     onViewportMoved: ->
       @setPosition()
 
+    setStage: ->
+      @$el.css
+        backgroundPosition: "-#{@model.get("stage") * 16}px 0"
+
     setPosition: ->
       centerX = ~~(viewportModel.get("width") / 2)
       centerY = ~~(viewportModel.get("height") / 2)
       viewX = viewportModel.get "x"
       viewY = viewportModel.get "y"
-      x = (@model.get("x") - viewX) + centerX
-      y = (@model.get("y") - viewY) + centerY
+      myX = @model.get "x"
+      myY = @model.get "y"
+      x = (myX - viewX) + centerX
+      y = (myY - viewY) + centerY
+
+      worldWidth = heightmapModel.get("worldTileWidth")
+      halfWorldWidth = ~~(worldWidth / 2)
+      worldHeight = heightmapModel.get("worldTileHeight")
+      halfWorldHeight = ~~(worldHeight / 2)
+
+      offsetX = 0
+      offsetY = 0
+
+      if myX > viewX + halfWorldWidth
+        offsetX -= worldWidth
+
+      if myX < viewX - halfWorldWidth
+        offsetX += worldWidth
+
+      if myY > viewY + halfWorldHeight
+        offsetY -= worldHeight
+
+      if myY < viewY - halfWorldHeight
+        offsetY += worldHeight
 
       @$el.css
-        left: x * 16
-        top: y * 16
+        left: (x + offsetX) * 16
+        top: (y + offsetY) * 16
