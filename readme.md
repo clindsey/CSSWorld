@@ -1,1 +1,1 @@
-(demo here)[http://errmano.com/workshop/CSSWorld/]
+demo here at http://errmano.com/workshop/CSSWorld/
