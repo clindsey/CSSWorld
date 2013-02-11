@@ -2,46 +2,36 @@ define [
       "collections/ViewportTiles"
       "views/viewport/ViewportTile"
       "models/Viewport"
+      "collections/Plants"
+      "models/Plant"
+      "views/Plant"
+      "models/Heightmap"
+      "Alea"
       "Backbone"
     ], (
       viewportTiles,
       ViewportTileView,
-      viewportModel) ->
+      viewportModel,
+      plants,
+      PlantModel,
+      PlantView,
+      heightmapModel) ->
 
   ViewportView = Backbone.View.extend
-    el: "#tile-viewport"
+    el: ".map-viewport"
 
     initialize: ->
       @render()
 
-      @listenTo viewportModel, "moved", @updateViewport
+      @makePlants()
 
-      $(document).keydown (jqEvent) =>
-        viewportX = viewportModel.get "x"
-        viewportY = viewportModel.get "y"
-
-        vx = 0
-        vy = 0
-
-        if jqEvent.keyCode is 37 # left
-          vx -= 1
-        else if jqEvent.keyCode is 38 # up
-          vy -= 1
-        else if jqEvent.keyCode is 39 # right
-          vx += 1
-        else if jqEvent.keyCode is 40 # down
-          vy += 1
-
-        viewportModel.set
-          x: viewportX + vx
-          y: viewportY + vy
-
-        unless vx is 0 and vy is 0
-          jqEvent.preventDefault()
-          jqEvent.stopPropagation()
-          return false
+      @listenTo viewportModel, "moved", @onViewportMoved
 
     render: ->
+      @$el.css
+        width: viewportModel.get("width") * 16
+        height: viewportModel.get("height") * 16
+
       @grid = []
 
       viewportTiles.each (viewportTileModel) =>
@@ -54,7 +44,29 @@ define [
 
       @
 
-    updateViewport: ->
+    makePlants: ->
+      plantCount = 100
+      giveUpCounter = 100
+
+      rnd = new Alea(heightmapModel.get "SEED")
+      heightmapData = heightmapModel.get "data"
+
+      while plants.length < plantCount and giveUpCounter > 0
+        x = ~~(rnd() * heightmapModel.get("worldTileWidth"))
+        y = ~~(rnd() * heightmapModel.get("worldTileHeight"))
+
+        unless heightmapData[y][x].get("type") is 255
+          giveUpCounter -= 1
+          continue
+
+        plant = new PlantModel x: x, y: y
+        plantView = new PlantView model: plant
+
+        plants.add plant
+
+        @$el.append plantView.render().$el
+
+    onViewportMoved: ->
       _.each @grid, (viewportTileView, index) ->
         viewportTileView.type = viewportTiles.at(index).get("type")
         viewportTileView.setBackgroundPosition()

@@ -13,8 +13,6 @@
       initialize: function() {
         this.listenTo(this, "change:x", this.updateTiles);
         this.listenTo(this, "change:y", this.updateTiles);
-        this.listenTo(this, "change:width", this.updateTiles);
-        this.listenTo(this, "change:height", this.updateTiles);
         return this.updateTiles();
       },
       clamp: function(index, size) {

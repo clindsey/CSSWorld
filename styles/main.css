@@ -8,8 +8,8 @@ body {
 }
 
 .map-viewport {
-  width: 320px;
-  height: 320px;
+  margin: 0 auto;
+  position: relative;
 }
 
 .map-tile {
@@ -21,4 +21,11 @@ body {
   text-align: center;
   text-shadow: 1px 1px 0 #000;
   background-image: url(../images/terra.png);
+}
+
+.plant-tile {
+  position: absolute;
+  background-image: url("../images/plants.png");
+  width: 16px;
+  height: 16px;
 }

@@ -16,8 +16,6 @@ define [
     initialize: ->
       @listenTo @, "change:x", @updateTiles
       @listenTo @, "change:y", @updateTiles
-      @listenTo @, "change:width", @updateTiles
-      @listenTo @, "change:height", @updateTiles
 
       @updateTiles()
 

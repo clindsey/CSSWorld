@@ -9,7 +9,7 @@ define [
 
   Heightmap = Backbone.Model.extend
     defaults:
-      SEED: (new Date()).getTime()
+      SEED: 20130211 #(new Date()).getTime()
 
     initialize: ->
       worldChunkWidth = 8
