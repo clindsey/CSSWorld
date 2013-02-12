@@ -2,8 +2,8 @@
 (function() {
 
   define(["models/Entity", "Backbone"], function(EntityModel) {
-    var Plant;
-    return Plant = EntityModel.extend();
+    var Creature;
+    return Creature = EntityModel.extend();
   });
 
 }).call(this);

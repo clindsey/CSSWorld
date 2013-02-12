@@ -5,7 +5,7 @@
     var Heightmap;
     Heightmap = Backbone.Model.extend({
       defaults: {
-        SEED: (new Date()).getTime()
+        SEED: 20120211
       },
       initialize: function() {
         var chunkHeight, chunkWidth, chunks, heightmap, maxElevation, worldChunkHeight, worldChunkWidth;

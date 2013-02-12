@@ -24,9 +24,39 @@ body {
   background-image: url(../images/terra.png);
 }
 
-.plant-tile {
+.entity-title {
   position: absolute;
-  background-image: url("../images/plants.png");
   width: 16px;
   height: 16px;
+  background-position: 0 0;
+}
+
+.plant-tile {
+  background-image: url("../images/plants.png");
+}
+
+.creature-tile {
+  background-image: url("../images/slimy.png");
+  background-position: 0 0;
+  -webkit-animation: walkSouth 1s steps(4) infinite;
+}
+
+@-webkit-keyframes walkEast {
+  from { background-position: 0 0; }
+  to { background-position: -64px 0; }
+}
+
+@-webkit-keyframes walkWest {
+  from { background-position: 0 -32px; }
+  to { background-position: -64px -32px; }
+}
+
+@-webkit-keyframes walkNorth {
+  from { background-position: 0 -16px; }
+  to { background-position: -64px -16px; }
+}
+
+@-webkit-keyframes walkSouth {
+  from { background-position: 0 -48px; }
+  to { background-position: -64px -48px; }
 }

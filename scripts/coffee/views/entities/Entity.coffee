@@ -9,23 +9,18 @@ define [
   Plant = Backbone.View.extend
     tagName: "div"
 
-    className: "plant-tile"
+    className: "entity-tile"
 
     initialize: ->
       @listenTo viewportModel, "moved", @onViewportMoved
 
     render: ->
       @setPosition()
-      @setStage()
 
       @
 
     onViewportMoved: ->
       @setPosition()
-
-    setStage: ->
-      @$el.css
-        backgroundPosition: "-#{@model.get("stage") * 16}px 0"
 
     setPosition: ->
       centerX = ~~(viewportModel.get("width") / 2)

@@ -3,8 +3,11 @@ define [
       "views/viewport/ViewportTile"
       "models/Viewport"
       "collections/Plants"
+      "collections/Creatures"
       "models/Plant"
-      "views/Plant"
+      "views/entities/Plant"
+      "models/Creature"
+      "views/entities/Creature"
       "models/Heightmap"
       "Alea"
       "Backbone"
@@ -13,17 +16,24 @@ define [
       ViewportTileView,
       viewportModel,
       plants,
+      creatures,
       PlantModel,
       PlantView,
+      CreatureModel,
+      CreatureView,
       heightmapModel) ->
 
   ViewportView = Backbone.View.extend
     el: ".map-viewport"
 
     initialize: ->
+      @rnd = new Alea(heightmapModel.get "SEED")
+
       @render()
 
       @makePlants()
+
+      @makeCreatures()
 
       @listenTo viewportModel, "moved", @onViewportMoved
 
@@ -44,17 +54,38 @@ define [
 
       @
 
+    makeCreatures: ->
+      creatureCount = 100
+      giveUpCounter = 100
+
+      heightmapData = heightmapModel.get "data"
+
+      while creatures.length < creatureCount and giveUpCounter > 0
+        x = ~~(@rnd() * heightmapModel.get("worldTileWidth"))
+        y = ~~(@rnd() * heightmapModel.get("worldTileHeight"))
+        stage = ~~(@rnd() * 4)
+
+        unless heightmapData[y][x].get("type") is 255
+          giveUpCounter -= 1
+          continue
+
+        creature = new CreatureModel x: x, y: y, stage: stage
+        creatureView = new CreatureView model: creature
+
+        creatures.add creature
+
+        @$el.append creatureView.render().$el
+
     makePlants: ->
       plantCount = 100
       giveUpCounter = 100
 
-      rnd = new Alea(heightmapModel.get "SEED")
       heightmapData = heightmapModel.get "data"
 
       while plants.length < plantCount and giveUpCounter > 0
-        x = ~~(rnd() * heightmapModel.get("worldTileWidth"))
-        y = ~~(rnd() * heightmapModel.get("worldTileHeight"))
-        stage = ~~(rnd() * 4)
+        x = ~~(@rnd() * heightmapModel.get("worldTileWidth"))
+        y = ~~(@rnd() * heightmapModel.get("worldTileHeight"))
+        stage = ~~(@rnd() * 4)
 
         unless heightmapData[y][x].get("type") is 255
           giveUpCounter -= 1

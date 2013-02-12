@@ -4,4 +4,4 @@ define [
     ], (
       EntityModel) ->
 
-  Plant = EntityModel.extend()
+  Plant = Backbone.Model.extend()

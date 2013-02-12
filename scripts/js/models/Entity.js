@@ -3,7 +3,7 @@
 
   define(["models/Entity", "Backbone"], function(EntityModel) {
     var Plant;
-    return Plant = EntityModel.extend();
+    return Plant = Backbone.Model.extend();
   });
 
 }).call(this);

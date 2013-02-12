@@ -4,4 +4,4 @@ define [
     ], (
       EntityModel) ->
 
-  Plant = EntityModel.extend()
+  Creature = EntityModel.extend()

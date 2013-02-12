@@ -5,22 +5,16 @@
     var Plant;
     return Plant = Backbone.View.extend({
       tagName: "div",
-      className: "plant-tile",
+      className: "entity-tile",
       initialize: function() {
         return this.listenTo(viewportModel, "moved", this.onViewportMoved);
       },
       render: function() {
         this.setPosition();
-        this.setStage();
         return this;
       },
       onViewportMoved: function() {
         return this.setPosition();
-      },
-      setStage: function() {
-        return this.$el.css({
-          backgroundPosition: "-" + (this.model.get("stage") * 16) + "px 0"
-        });
       },
       setPosition: function() {
         var centerX, centerY, halfWorldHeight, halfWorldWidth, myX, myY, offsetX, offsetY, viewX, viewY, worldHeight, worldWidth, x, y;
