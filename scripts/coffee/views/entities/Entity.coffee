@@ -14,10 +14,16 @@ define [
     initialize: ->
       @listenTo viewportModel, "moved", @onViewportMoved
 
+      @listenTo @model, "change:x", @onMove
+      @listenTo @model, "change:y", @onMove
+
     render: ->
       @setPosition()
 
       @
+
+    onMove: ->
+      @setPosition()
 
     onViewportMoved: ->
       @setPosition()

@@ -41,6 +41,11 @@ body {
   -webkit-animation: walkSouth 1s steps(4) infinite;
 }
 
+.creature-moving {
+  -webkit-transition: top 0.5s linear, left 0.5s linear;
+          transition: top 0.5s linear, left 0.5s linear;
+}
+
 @-webkit-keyframes walkEast {
   from { background-position: 0 0; }
   to { background-position: -64px 0; }

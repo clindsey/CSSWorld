@@ -7,11 +7,16 @@
       tagName: "div",
       className: "entity-tile",
       initialize: function() {
-        return this.listenTo(viewportModel, "moved", this.onViewportMoved);
+        this.listenTo(viewportModel, "moved", this.onViewportMoved);
+        this.listenTo(this.model, "change:x", this.onMove);
+        return this.listenTo(this.model, "change:y", this.onMove);
       },
       render: function() {
         this.setPosition();
         return this;
+      },
+      onMove: function() {
+        return this.setPosition();
       },
       onViewportMoved: function() {
         return this.setPosition();

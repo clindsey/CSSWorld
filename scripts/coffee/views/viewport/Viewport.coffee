@@ -99,6 +99,15 @@ define [
         @$el.append plantView.render().$el
 
     onViewportMoved: ->
+      $(".creature-moving").removeClass("creature-moving")
+
+      clearTimeout @timeout
+
       _.each @grid, (viewportTileView, index) ->
         viewportTileView.type = viewportTiles.at(index).get("type")
         viewportTileView.setBackgroundPosition()
+
+      delay = (time, callback) => setTimeout callback, time
+
+      @timeout = delay 998 / 2, =>
+        $(".creature-tile").addClass("creature-moving")

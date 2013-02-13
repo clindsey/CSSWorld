@@ -83,9 +83,19 @@
         return _results;
       },
       onViewportMoved: function() {
-        return _.each(this.grid, function(viewportTileView, index) {
+        var delay,
+          _this = this;
+        $(".creature-moving").removeClass("creature-moving");
+        clearTimeout(this.timeout);
+        _.each(this.grid, function(viewportTileView, index) {
           viewportTileView.type = viewportTiles.at(index).get("type");
           return viewportTileView.setBackgroundPosition();
+        });
+        delay = function(time, callback) {
+          return setTimeout(callback, time);
+        };
+        return this.timeout = delay(998 / 2, function() {
+          return $(".creature-tile").addClass("creature-moving");
         });
       }
     });

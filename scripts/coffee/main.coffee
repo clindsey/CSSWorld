@@ -5,12 +5,17 @@ require.config
     Backbone: "../../vendor/backbone/backbone.dev.0.9.10"
     Bootstrap: "../../vendor/bootstrap/2.3.0/js/bootstrap"
     Alea: "../../vendor/alea/alea"
+    Base: "../../vendor/base/base"
+    Machine: "../../vendor/machine/machine"
+    astar: "../../vendor/astar/astar"
 
   shim:
     underscore:
       exports: "_"
     Backbone:
       [ "underscore", "jQuery" ]
+    Machine:
+      [ "Base" ]
 
   urlArgs: "bust=#{ (new Date()).getTime() }"
 
