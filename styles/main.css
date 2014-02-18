@@ -1,0 +1,67 @@
+@import url("../vendor/bootstrap/2.3.0/css/bootstrap.css");
+@import url("../vendor/elusive-webfont/css/elusive-webfont.css");
+
+body {
+  padding-top: 20px;
+  padding-bottom: 40px;
+  background-color: #ddd;
+}
+
+.map-viewport {
+  margin: 0 auto;
+  position: relative;
+  overflow: hidden;
+}
+
+.map-tile {
+  float: left;
+  width: 16px;
+  height: 16px;
+  background-color: #880000;
+  color: #fff;
+  text-align: center;
+  text-shadow: 1px 1px 0 #000;
+  background-image: url(../images/terra.png);
+}
+
+.entity-title {
+  position: absolute;
+  width: 16px;
+  height: 16px;
+  background-position: 0 0;
+}
+
+.plant-tile {
+  background-image: url("../images/plants.png");
+}
+
+.creature-tile {
+  background-image: url("../images/slimy.png");
+  background-position: 0 0;
+  -webkit-animation: walkSouth 1s steps(4) infinite;
+}
+
+.creature-moving {
+  -webkit-transition: top 0.5s linear, left 0.5s linear;
+          transition: top 0.5s linear, left 0.5s linear;
+}
+
+@-webkit-keyframes walkEast {
+  from { background-position: 0 0; }
+  to { background-position: -64px 0; }
+}
+
+@-webkit-keyframes walkWest {
+  from { background-position: 0 -32px; }
+  to { background-position: -64px -32px; }
+}
+
+@-webkit-keyframes walkNorth {
+  from { background-position: 0 -16px; }
+  to { background-position: -64px -16px; }
+}
+
+@-webkit-keyframes walkSouth {
+  from { background-position: 0 -48px; }
+  to { background-position: -64px -48px; }
+}
